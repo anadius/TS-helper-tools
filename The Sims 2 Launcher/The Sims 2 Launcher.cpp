@@ -16,32 +16,32 @@
 #define REGISTRY_KEY_PATH "Software\\Electronic Arts\\The Sims 2 Ultimate Collection 25"
 #define REGISTRY_KEY_LANG_PATH REGISTRY_KEY_PATH "\\1.0"
 #define REGISTRY_LANG_KEY "language"
-#define DEFAULT_LANG_INDEX 4
+#define DEFAULT_LANG_INDEX 6
 
 
-std::vector<std::tuple<std::string, int>> languages = {
-    {"Czech", 11},
-    {"Danish", 9},
-    {"German", 3},
-    {"English (United Kingdom)", 13},
-    {"English (United States)", 1},
-    {"Spanish", 5},
-    {"Finnish", 7},
-    {"French", 2},
-    {"Hungarian", 24},
-    {"Italian", 4},
-    {"Japanese", 14},
-    {"Korean", 15},
-    {"Dutch", 8},
-    {"Norwegian", 22},
-    {"Polish", 20},
-    {"Portuguese (Brazil)", 10},
-    {"Portuguese (Portugal)", 23},
-    {"Russian", 16},
-    {"Swedish", 6},
-    {"Thai", 21},
-    {"Chinese (Simplified)", 17},
-    {"Chinese (Traditional)", 18},
+std::vector<std::tuple<std::string, int, std::wstring>> languages = {
+    {"Chinese (Simplified)", 17, L"zh_CN"},
+    {"Chinese (Traditional)", 18, L"zh_TW"},
+    {"Czech", 11, L"cs_CZ"},
+    {"Danish", 9, L"da_DK"},
+    {"Dutch", 8, L"nl_NL"},
+    {"English (United Kingdom)", 13, L"en_GB"},
+    {"English (United States)", 1, L"en_US"},
+    {"Finnish", 7, L"fi_FI"},
+    {"French", 2, L"fr_FR"},
+    {"German", 3, L"de_DE"},
+    {"Hungarian", 24, L"hu_HU"},
+    {"Italian", 4, L"it_IT"},
+    {"Japanese", 14, L"ja_JP"},
+    {"Korean", 15, L"ko_KR"},
+    {"Norwegian", 22, L"no_NO"},
+    {"Polish", 20, L"pl_PL"},
+    {"Portuguese (Brazil)", 10, L"pt_BR"},
+    {"Portuguese (Portugal)", 23, L"pt_PT"},
+    {"Russian", 16, L"ru_RU"},
+    {"Spanish", 5, L"es_ES"},
+    {"Swedish", 6, L"sv_SE"},
+    {"Thai", 21, L"th_TH"},
 };
 
 void run(const wchar_t* verb, const wchar_t* path, const wchar_t* params, bool wait, bool hide);
@@ -115,7 +115,7 @@ void play_game(int index)
     set_registry_value(HKEY_CURRENT_USER, REGISTRY_KEY_PATH "\\Sims2SP8.exe", "Installed", 1);
     set_registry_value(HKEY_CURRENT_USER, REGISTRY_KEY_PATH "\\Sims2SP8.exe", "Path", (cwd + "\\SP8").c_str());
 
-    run(nullptr, L"EP9\\TSBin\\Sims2EP9.exe", nullptr, false, false);
+    run(nullptr, L"EP9\\TSBin\\Sims2EP9.exe", (L"-emuGameLang " + std::get<2>(data)).c_str(), false, false);
 }
 
 void install_redists(HWND play, HWND redists)

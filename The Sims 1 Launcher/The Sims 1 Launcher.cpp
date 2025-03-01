@@ -16,28 +16,28 @@
 #define REGISTRY_KEY_PATH "Software\\Electronic Arts\\The Sims 25"
 #define REGISTRY_KEY_LANG_PATH REGISTRY_KEY_PATH
 #define REGISTRY_LANG_KEY "SIMS_LANGUAGE"
-#define DEFAULT_LANG_INDEX 3
+#define DEFAULT_LANG_INDEX 5
 
 
-std::vector<std::tuple<std::string, std::string, int>> languages = {
-    {"Danish", "Danish", 1},
-    {"German", "German", 2},
-    {"English (United Kingdom)", "UKEnglish", 2},
-    {"English (United States)", "USEnglish", 1},
-    {"Spanish", "Spanish", 1},
-    {"Finnish", "Finnish", 1},
-    {"French", "French", 2},
-    {"Italian", "Italian", 2},
-    {"Japanese", "Japanese", 5},
-    {"Korean", "Korean", 8},
-    {"Dutch", "Dutch", 2},
-    {"Norwegian", "Norwegian", 1},
-    {"Polish", "Polish", 4},
-    {"Portuguese", "Portuguese", 3},
-    {"Swedish", "Swedish", 2},
-    {"Thai", "Thai", 7},
-    {"Chinese (Simplified)", "SimplifiedChinese", 9},
-    {"Chinese (Traditional)", "TraditionalChinese", 6},
+std::vector<std::tuple<std::string, std::string, std::wstring, int>> languages = {
+    {"Chinese (Simplified)", "SimplifiedChinese", L"zh_CN", 9},
+    {"Chinese (Traditional)", "TraditionalChinese", L"zh_TW", 6},
+    {"Danish", "Danish", L"da_DK", 1},
+    {"Dutch", "Dutch", L"nl_NL", 2},
+    {"English (United Kingdom)", "UKEnglish", L"en_GB", 2},
+    {"English (United States)", "USEnglish", L"en_US", 1},
+    {"Finnish", "Finnish", L"fi_FI", 1},
+    {"French", "French", L"fr_FR", 2},
+    {"German", "German", L"de_DE", 2},
+    {"Italian", "Italian", L"it_IT", 2},
+    {"Japanese", "Japanese", L"ja_JP", 5},
+    {"Korean", "Korean", L"ko_KR", 8},
+    {"Norwegian", "Norwegian", L"no_NO", 1},
+    {"Polish", "Polish", L"pl_PL", 4},
+    {"Portuguese", "Portuguese", L"pt_BR", 3},
+    {"Spanish", "Spanish", L"es_ES", 1},
+    {"Swedish", "Swedish", L"sv_SE", 2},
+    {"Thai", "Thai", L"th_TH", 7},
 };
 
 void run(const wchar_t* verb, const wchar_t* path, const wchar_t* params, bool wait, bool hide);
@@ -53,9 +53,9 @@ void play_game(int index)
     auto& data = languages[index];
     set_registry_value(HKEY_CURRENT_USER, REGISTRY_KEY_LANG_PATH, REGISTRY_LANG_KEY, std::get<1>(data).c_str());
     set_registry_value(HKEY_CURRENT_USER, REGISTRY_KEY_LANG_PATH, "SIMS_OTHERLANGUAGE", std::get<1>(data).c_str());
-    set_registry_value(HKEY_CURRENT_USER, REGISTRY_KEY_LANG_PATH, "SIMS_SKU", std::get<2>(data));
+    set_registry_value(HKEY_CURRENT_USER, REGISTRY_KEY_LANG_PATH, "SIMS_SKU", std::get<3>(data));
 
-    run(nullptr, L"sims.exe", nullptr, false, false);
+    run(nullptr, L"sims.exe", (L"-emuGameLang " + std::get<2>(data)).c_str(), false, false);
 }
 
 void install_redists(HWND play, HWND redists)
